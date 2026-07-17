@@ -16,12 +16,16 @@ WxO `byo_slack` still only does @mention/DM. This gateway is the custom integrat
 
 ---
 
-## Quick start (hosted)
+## Choose a deployment path
 
-1. Deploy or run your gateway host (private build / npm when published).
-2. Copy [`.env.example`](.env.example) → `.env` and [`config.example.yaml`](config.example.yaml) → `config.yaml`.
-3. Open the admin UI (default `http://localhost:3100/`) — bindings, config, logs, MCP tools, diagnostics.
-4. Register `/mcp` with watsonx Orchestrate or your MCP client (see below).
+Documentation is split so each path stays clear:
+
+| Path | Guide |
+|------|--------|
+| **Local + ngrok** | [`docs/local-ngrok/`](docs/local-ngrok/) — laptop gateway + tunnel + WxO toolkit |
+| **IBM Code Engine** | [`docs/code-engine/`](docs/code-engine/) — always-on app + stable `/mcp` URL |
+
+Index: [`docs/README.md`](docs/README.md) · Shared Slack/WxO setup: [`SETUP.md`](SETUP.md)
 
 ### Via npm / npx (when published)
 
@@ -29,7 +33,7 @@ WxO `byo_slack` still only does @mention/DM. This gateway is the custom integrat
 npx @markusvankempen/slack-wxo-mcp-gateway
 ```
 
-Requires Node 18+ and Python 3.10+.
+Requires Node 18+ and Python 3.10+. Then follow the [local-ngrok](docs/local-ngrok/) guide for the tunnel + toolkit steps.
 
 ---
 

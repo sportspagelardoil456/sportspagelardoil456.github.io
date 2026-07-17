@@ -3,7 +3,17 @@
 **Docs:** [https://github.com/markusvankempen/slack-wxo-mcp-gateway](https://github.com/markusvankempen/slack-wxo-mcp-gateway)  
 **Author:** [Markus van Kempen](https://github.com/markusvankempen)
 
-The live admin dashboard **Setup** tab mirrors this guide (`GET /api/setup`) with env readiness, copy-paste commands, and example agent YAMLs.
+Shared Slack / WxO / agent configuration lives here.  
+**Deployment is split into two distinguished guides:**
+
+| Path | Directory | Best for |
+|------|-----------|----------|
+| Local + ngrok | [`docs/local-ngrok/`](docs/local-ngrok/) | Laptop demo, fast iteration |
+| IBM Code Engine | [`docs/code-engine/`](docs/code-engine/) | Always-on host, stable Slack/WxO URLs |
+
+Index: [`docs/README.md`](docs/README.md)
+
+The live admin dashboard **Setup** tab (`GET /api/setup`) shows env readiness, copy-paste commands, and example agent YAMLs for whichever host you are on.
 
 ---
 
@@ -31,7 +41,9 @@ Public without auth: `/health`, `/mcp`, `/slack/events`.
 3. Copy **Bot User OAuth Token** → `SLACK_BOT_TOKEN`  
 4. **Signing Secret** → `SLACK_SIGNING_SECRET` (if using Events)  
 5. `/invite @YourBot` in each channel; copy **Channel ID** into bindings  
-6. Optional Events: Request URL `https://YOUR_HOST/slack/events` → `message.channels` / `message.groups`  
+6. Optional Events: Request URL = `https://YOUR_HOST/slack/events` → `message.channels` / `message.groups`  
+   - ngrok: update whenever the tunnel URL changes — see [`docs/local-ngrok/`](docs/local-ngrok/)  
+   - Code Engine: set once — see [`docs/code-engine/`](docs/code-engine/)  
 7. Reinstall after adding new scopes  
 
 ### Bot scopes
@@ -50,8 +62,11 @@ Prefer **poll** mode for multi-channel; use **events** when you want push delive
 
 ## 3. watsonx Orchestrate
 
-1. Set `WXO_*` in `.env` and start/deploy the gateway  
-2. Register the remote MCP toolkit (real DNS — no placeholders):
+1. Set `WXO_*` in `.env`  
+2. Deploy via [local-ngrok](docs/local-ngrok/) **or** [code-engine](docs/code-engine/) so `/mcp` is reachable  
+3. Register the remote MCP toolkit with that path’s real HTTPS URL  
+4. Import an example agent YAML and put its `agent_id` in the binding  
+5. Prefer `reply_mode: gateway_thread` + **answer-only** agent  
 
 ```bash
 orchestrate toolkits add -k mcp -n slack_wxo_gateway \
@@ -60,25 +75,22 @@ orchestrate toolkits add -k mcp -n slack_wxo_gateway \
   --tools "*"
 ```
 
-3. Import an example agent (see below) and put its `agent_id` in `config.yaml`  
-4. Prefer `reply_mode: gateway_thread` + **answer-only** agent  
-
 ---
 
 ## 4. Example agents
 
 | Agent | File | Use when |
 |-------|------|----------|
-| `slack_gateway_answer_agent` | `agents/slack_gateway_answer_agent.yaml` | Channel answers (`gateway_thread`) |
-| `slack_gateway_ops_agent` | `agents/slack_gateway_ops_agent.yaml` | Day-2 routing / diagnostics |
-| `slack_gateway_test_agent` | `agent.yaml` | Full toolkit smoke |
+| `slack_gateway_answer_agent` | [`agents/slack_gateway_answer_agent.yaml`](agents/slack_gateway_answer_agent.yaml) | Channel answers (`gateway_thread`) |
+| `slack_gateway_ops_agent` | [`agents/slack_gateway_ops_agent.yaml`](agents/slack_gateway_ops_agent.yaml) | Day-2 routing / diagnostics |
+| `slack_gateway_test_agent` | [`agent.yaml`](agent.yaml) | Full toolkit smoke |
 
 ```bash
 orchestrate agents import -f agents/slack_gateway_answer_agent.yaml
 orchestrate agents deploy -n slack_gateway_answer_agent
 ```
 
-Full YAML bodies are available in the admin UI → **Setup → Example agents** (and in the private package; this docs repo may ship examples separately).
+Also in admin UI → **Setup → Example agents**.
 
 ---
 
@@ -103,4 +115,4 @@ bindings:
 
 1. Admin UI → **Diagnostics** (Slack auth + WxO token)  
 2. Post a human message in the bound Slack channel  
-3. Optional: `orchestrate chat ask -n slack_gateway_test_agent '…smoke…'`  
+3. Optional smoke agent — see the guide for your deployment path  
