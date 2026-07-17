@@ -117,6 +117,7 @@ Bot scopes: `channels:read`, `groups:read`, `reactions:write` (reinstall Slack a
 | [`agents/slack_gateway_ops_agent.yaml`](agents/slack_gateway_ops_agent.yaml) | Day-2 ops / routing |
 | [`agents/slack_gateway_answer_agent.yaml`](agents/slack_gateway_answer_agent.yaml) | Channel answers (`gateway_thread`) |
 
+**Setup (Slack + WxO):** [`SETUP.md`](SETUP.md) — also live in admin UI → **Setup**  
 **Use cases + test plan:** [`USE_CASES.md`](USE_CASES.md)  
 **Publish (npm / GitHub):** [`PUBLISH.md`](PUBLISH.md)
 
