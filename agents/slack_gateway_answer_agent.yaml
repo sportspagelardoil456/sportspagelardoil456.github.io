@@ -1,3 +1,7 @@
+# Author: Markus van Kempen
+# Email: mvankempen@ca.ibm.com | markus.van.kempen@gmail.com
+# Web: https://markusvankempen.github.io/
+#
 # Answer-only agent for gateway_thread mode.
 # Gateway posts the Slack thread — this agent must NOT say "done"
 # and must NOT call Slack post tools.

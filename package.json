@@ -1,0 +1,105 @@
+{
+  "name": "@markusvankempen/slack-wxo-mcp-gateway",
+  "version": "1.0.0",
+  "description": "Slack ↔ watsonx Orchestrate MCP gateway by Markus van Kempen — multi-channel Slack→WxO routing, background poller, admin dashboard, IBM Code Engine + local ngrok. Streamable HTTP /mcp for watsonx Orchestrate, Cursor, Claude, and Copilot.",
+  "mcpName": "io.github.markusvankempen/slack-wxo-mcp-gateway",
+  "type": "commonjs",
+  "bin": {
+    "slack-wxo-mcp-gateway": "bin/slack-wxo-mcp-gateway.js"
+  },
+  "scripts": {
+    "start": "node bin/slack-wxo-mcp-gateway.js",
+    "prepublishOnly": "node -e \"require('fs').accessSync('bin/slack-wxo-mcp-gateway.js')\"",
+    "github:metadata": "bash scripts/apply-github-metadata.sh",
+    "sync:public": "bash scripts/sync-public-repo.sh"
+  },
+  "files": [
+    "bin/",
+    "*.py",
+    "agents/",
+    "docs/",
+    "requirements.txt",
+    "config.example.yaml",
+    ".env.example",
+    "ui.html",
+    "Dockerfile",
+    ".dockerignore",
+    "agent.yaml",
+    "deploy_e2e.sh",
+    "deploy_code_engine.sh",
+    "test_code_engine.sh",
+    "test_tools_e2e.sh",
+    "stop.sh",
+    "README.md",
+    "SETUP.md",
+    "USE_CASES.md",
+    "PUBLISH.md",
+    "AUTHOR.md",
+    "LICENSE",
+    "scripts/"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "slack",
+    "slack-bot",
+    "slack-api",
+    "watsonx",
+    "watsonx-orchestrate",
+    "wxo",
+    "ibm",
+    "ibm-cloud",
+    "ibm-code-engine",
+    "code-engine",
+    "ngrok",
+    "streamable-http",
+    "streamable_http",
+    "fastmcp",
+    "gateway",
+    "poller",
+    "multi-channel",
+    "admin-dashboard",
+    "npx",
+    "cursor",
+    "claude",
+    "claude-desktop",
+    "github-copilot",
+    "copilot",
+    "vscode",
+    "agentic-ai",
+    "ai-agents",
+    "tool-calling",
+    "llm-tools",
+    "orchestrate",
+    "markusvankempen"
+  ],
+  "author": {
+    "name": "Markus van Kempen",
+    "email": "markus.van.kempen@gmail.com",
+    "url": "https://markusvankempen.github.io/"
+  },
+  "contributors": [
+    {
+      "name": "Markus van Kempen",
+      "email": "mvankempen@ca.ibm.com",
+      "url": "https://markusvankempen.github.io/"
+    }
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markusvankempen/slack-wxo-mcp-gateway.git"
+  },
+  "homepage": "https://github.com/markusvankempen/slack-wxo-mcp-gateway#readme",
+  "bugs": {
+    "url": "https://github.com/markusvankempen/slack-wxo-mcp-gateway/issues",
+    "email": "markus.van.kempen@gmail.com"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

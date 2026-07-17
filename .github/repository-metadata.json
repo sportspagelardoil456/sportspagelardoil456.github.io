@@ -1,0 +1,34 @@
+{
+  "public": {
+    "repo": "markusvankempen/slack-wxo-mcp-gateway",
+    "description": "Slack ↔ watsonx Orchestrate MCP gateway — multi-channel Slack routing, poller, admin UI. Docs for local ngrok + IBM Code Engine. Streamable HTTP /mcp for WxO, Cursor & Claude. By Markus van Kempen.",
+    "homepage": "https://markusvankempen.github.io/",
+    "topics": [
+      "mcp",
+      "mcp-server",
+      "model-context-protocol",
+      "slack",
+      "slack-bot",
+      "watsonx",
+      "watsonx-orchestrate",
+      "wxo",
+      "ibm",
+      "ibm-cloud",
+      "code-engine",
+      "ngrok",
+      "streamable-http",
+      "gateway",
+      "poller",
+      "cursor",
+      "claude",
+      "claude-desktop",
+      "github-copilot",
+      "agentic-ai",
+      "admin-dashboard",
+      "orchestrate",
+      "fastmcp",
+      "ai-agents",
+      "tool-calling"
+    ]
+  }
+}

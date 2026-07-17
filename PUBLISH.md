@@ -1,8 +1,8 @@
 # Publish — GitHub docs + npm (later)
 
-**Docs (this repo):** [https://github.com/markusvankempen/slack-wxo-mcp-gateway](https://github.com/markusvankempen/slack-wxo-mcp-gateway)  
-**npm (planned):** [`@markusvankempen/slack-wxo-mcp-gateway`](https://www.npmjs.com/package/@markusvankempen/slack-wxo-mcp-gateway)  
-**Author:** [Markus van Kempen](https://github.com/markusvankempen)
+**Author:** Markus van Kempen  
+**Email:** [mvankempen@ca.ibm.com](mailto:mvankempen@ca.ibm.com) · [markus.van.kempen@gmail.com](mailto:markus.van.kempen@gmail.com)  
+**Web:** [https://markusvankempen.github.io/](https://markusvankempen.github.io/) · [GitHub](https://github.com/markusvankempen)
 
 This GitHub repository is **documentation only** for now (no application source).  
 All npm / MCP package references should still point at `https://github.com/markusvankempen`.

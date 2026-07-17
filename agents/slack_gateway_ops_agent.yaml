@@ -1,3 +1,7 @@
+# Author: Markus van Kempen
+# Email: mvankempen@ca.ibm.com | markus.van.kempen@gmail.com
+# Web: https://markusvankempen.github.io/
+#
 # Real-world ops agent: uses the full slack_wxo_gateway MCP toolkit.
 # Import after the toolkit is registered (local ngrok or Code Engine URL).
 spec_version: v1

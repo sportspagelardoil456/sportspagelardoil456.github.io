@@ -1,7 +1,8 @@
 # IBM Code Engine path
 
-**Docs home:** [https://github.com/markusvankempen/slack-wxo-mcp-gateway](https://github.com/markusvankempen/slack-wxo-mcp-gateway)  
-**Sibling path:** [Local + ngrok](../local-ngrok/) (use that for quick laptop demos)
+**Author:** Markus van Kempen  
+**Email:** [mvankempen@ca.ibm.com](mailto:mvankempen@ca.ibm.com) · [markus.van.kempen@gmail.com](mailto:markus.van.kempen@gmail.com)  
+**Web:** [https://markusvankempen.github.io/](https://markusvankempen.github.io/) · [GitHub](https://github.com/markusvankempen)
 
 Deploy the gateway as a **Code Engine application** with a stable public HTTPS URL. Best for always-on Slack polling and production-like WxO toolkits.
 

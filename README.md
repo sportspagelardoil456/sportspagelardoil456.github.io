@@ -1,8 +1,8 @@
 # Slack ↔ WxO MCP Gateway
 
-**GitHub (docs):** [https://github.com/markusvankempen/slack-wxo-mcp-gateway](https://github.com/markusvankempen/slack-wxo-mcp-gateway)  
-**npm (planned):** [`@markusvankempen/slack-wxo-mcp-gateway`](https://www.npmjs.com/package/@markusvankempen/slack-wxo-mcp-gateway)  
-**Author:** [Markus van Kempen](https://github.com/markusvankempen)
+**Author:** Markus van Kempen  
+**Email:** [mvankempen@ca.ibm.com](mailto:mvankempen@ca.ibm.com) · [markus.van.kempen@gmail.com](mailto:markus.van.kempen@gmail.com)  
+**Web:** [https://markusvankempen.github.io/](https://markusvankempen.github.io/) · [GitHub](https://github.com/markusvankempen)
 
 > This repository publishes **documentation only**. Application source is not included here (yet).
 
@@ -13,6 +13,18 @@ Hosted gateway that makes the “every Slack message → watsonx Orchestrate age
 > Same host exposes an **MCP toolkit** (`/mcp`) for WxO / Cursor / other clients.
 
 WxO `byo_slack` still only does @mention/DM. This gateway is the custom integration layer.
+
+---
+
+## npm / MCP identity
+
+| | |
+|---|---|
+| npm | `@markusvankempen/slack-wxo-mcp-gateway` |
+| MCP name | `io.github.markusvankempen/slack-wxo-mcp-gateway` |
+| Topics | `mcp` · `mcp-server` · `slack` · `watsonx-orchestrate` · `wxo` · `code-engine` · `ngrok` · `streamable-http` · `cursor` · `claude` · `agentic-ai` |
+
+Full keyword list lives in [`package.json`](package.json) for npm discoverability.
 
 ---
 

@@ -1,3 +1,7 @@
+# Author: Markus van Kempen
+# Email: mvankempen@ca.ibm.com | markus.van.kempen@gmail.com
+# Web: https://markusvankempen.github.io/
+#
 # Default smoke-test agent — full slack_wxo_gateway toolkit (all tools).
 # Import after toolkit registration (Code Engine or ngrok):
 #   orchestrate agents import -f agent.yaml
