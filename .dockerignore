@@ -1,0 +1,15 @@
+.env
+.env.*
+!.env.example
+.run/
+__pycache__/
+*.pyc
+.git/
+.gitignore
+*.md
+!.dockerignore
+agent.yaml
+agents/
+.venv/
+venv/
+**/.DS_Store

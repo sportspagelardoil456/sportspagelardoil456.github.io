@@ -1,0 +1,74 @@
+{
+  "name": "@markusvankempen/slack-wxo-mcp-gateway",
+  "version": "1.0.0",
+  "description": "Slack ↔ watsonx Orchestrate MCP gateway — multi-channel routing, poller, admin UI, Code Engine ready. Streamable HTTP /mcp for WxO, Cursor, and Claude.",
+  "mcpName": "io.github.markusvankempen/slack-wxo-mcp-gateway",
+  "type": "commonjs",
+  "bin": {
+    "slack-wxo-mcp-gateway": "bin/slack-wxo-mcp-gateway.js"
+  },
+  "scripts": {
+    "start": "node bin/slack-wxo-mcp-gateway.js",
+    "prepublishOnly": "node -e \"require('fs').accessSync('bin/slack-wxo-mcp-gateway.js')\""
+  },
+  "files": [
+    "bin/",
+    "*.py",
+    "agents/",
+    "requirements.txt",
+    "config.example.yaml",
+    ".env.example",
+    "ui.html",
+    "Dockerfile",
+    ".dockerignore",
+    "agent.yaml",
+    "deploy_e2e.sh",
+    "deploy_code_engine.sh",
+    "test_code_engine.sh",
+    "test_tools_e2e.sh",
+    "stop.sh",
+    "README.md",
+    "USE_CASES.md",
+    "PUBLISH.md",
+    "LICENSE",
+    "scripts/sync-public-repo.sh"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "slack",
+    "watsonx",
+    "watsonx-orchestrate",
+    "wxo",
+    "ibm",
+    "code-engine",
+    "streamable-http",
+    "npx",
+    "cursor",
+    "claude",
+    "gateway",
+    "poller"
+  ],
+  "author": {
+    "name": "Markus van Kempen",
+    "email": "markus.van.kempen@gmail.com",
+    "url": "https://github.com/markusvankempen"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markusvankempen/slack-wxo-mcp-gateway.git"
+  },
+  "homepage": "https://github.com/markusvankempen/slack-wxo-mcp-gateway#readme",
+  "bugs": {
+    "url": "https://github.com/markusvankempen/slack-wxo-mcp-gateway/issues",
+    "email": "markus.van.kempen@gmail.com"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

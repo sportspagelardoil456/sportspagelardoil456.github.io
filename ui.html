@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Slack ↔ WxO MCP Gateway</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --panel: #1a2332;
+      --panel2: #121a26;
+      --text: #e7ecf3;
+      --muted: #8b9bb4;
+      --accent: #3d8bfd;
+      --ok: #3dd68c;
+      --warn: #f0c14b;
+      --err: #ff8b8b;
+      --border: #2a3548;
+      --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+      --sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh;
+      font-family: var(--sans);
+      background:
+        radial-gradient(1000px 500px at 8% -15%, #1c2a44 0%, transparent 55%),
+        radial-gradient(800px 400px at 90% 0%, #152033 0%, transparent 50%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+    }
+    header {
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 20, 25, 0.85);
+      backdrop-filter: blur(8px);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .header-inner {
+      max-width: 1100px; margin: 0 auto;
+      padding: 0.9rem 1.25rem 0;
+    }
+    h1 { font-size: 1.35rem; margin: 0 0 0.15rem; letter-spacing: -0.02em; }
+    .sub { color: var(--muted); margin: 0 0 0.85rem; font-size: 0.92rem; }
+    .tabs { display: flex; gap: 0.25rem; flex-wrap: wrap; }
+    .tab {
+      background: transparent; border: 0; color: var(--muted);
+      padding: 0.65rem 0.9rem; cursor: pointer; font-weight: 600;
+      border-bottom: 2px solid transparent; border-radius: 0;
+    }
+    .tab:hover { color: var(--text); }
+    .tab.active { color: var(--text); border-bottom-color: var(--accent); }
+    main { max-width: 1100px; margin: 0 auto; padding: 1.25rem 1.25rem 4rem; }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .card {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1rem 1.1rem; margin-bottom: 1rem;
+    }
+    .card h2 { margin: 0 0 0.65rem; font-size: 1.05rem; }
+    .hint { color: var(--muted); font-size: 0.88rem; margin: 0 0 0.85rem; }
+    .row { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    @media (max-width: 800px) { .grid2 { grid-template-columns: 1fr; } }
+    label { display: block; font-size: 0.78rem; color: var(--muted); margin-bottom: 0.25rem; }
+    input, select, textarea {
+      width: 100%; background: var(--panel2); color: var(--text);
+      border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.7rem;
+      font-family: var(--mono); font-size: 0.82rem;
+    }
+    textarea { min-height: 320px; resize: vertical; }
+    button {
+      background: var(--accent); color: white; border: 0; border-radius: 8px;
+      padding: 0.5rem 0.95rem; font-weight: 600; cursor: pointer; font-size: 0.88rem;
+    }
+    button:hover { filter: brightness(1.08); }
+    button.secondary { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    button.danger { background: transparent; border: 1px solid #5a3030; color: var(--err); }
+    .pill {
+      display: inline-block; padding: 0.15rem 0.55rem; border-radius: 999px;
+      font-size: 0.75rem; border: 1px solid var(--border); color: var(--muted);
+    }
+    .pill.on { color: var(--ok); border-color: #2a6b4a; }
+    .pill.off { color: var(--err); border-color: #5a3030; }
+    .pill.warn { color: var(--warn); border-color: #6a5520; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { text-align: left; padding: 0.5rem 0.4rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { color: var(--muted); font-weight: 500; }
+    code { font-family: var(--mono); font-size: 0.84em; }
+    .msg { color: var(--ok); min-height: 1.2em; font-size: 0.88rem; }
+    .err { color: var(--err); }
+    .log-box {
+      background: #0a0e14; border: 1px solid var(--border); border-radius: 10px;
+      height: 420px; overflow: auto; font-family: var(--mono); font-size: 0.78rem;
+      padding: 0.6rem 0.75rem; white-space: pre-wrap; word-break: break-word;
+    }
+    .log-line { padding: 0.1rem 0; border-bottom: 1px solid rgba(42,53,72,0.45); }
+    .log-line .ts { color: #6d7f99; }
+    .log-line.INFO .lvl { color: #7eb6ff; }
+    .log-line.WARNING .lvl { color: var(--warn); }
+    .log-line.ERROR .lvl, .log-line.CRITICAL .lvl { color: var(--err); }
+    .log-line.DEBUG .lvl { color: #8b9bb4; }
+    .check {
+      display: flex; gap: 0.75rem; padding: 0.65rem 0;
+      border-bottom: 1px solid var(--border); align-items: flex-start;
+    }
+    .check:last-child { border-bottom: 0; }
+    .dot {
+      width: 0.7rem; height: 0.7rem; border-radius: 50%; margin-top: 0.35rem; flex: 0 0 auto;
+      background: var(--muted);
+    }
+    .dot.ok { background: var(--ok); }
+    .dot.bad { background: var(--err); }
+    .tool {
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: 0.75rem 0.85rem; margin-bottom: 0.55rem; background: var(--panel2);
+    }
+    .tool h3 { margin: 0 0 0.25rem; font-size: 0.95rem; font-family: var(--mono); }
+    .cat {
+      display: inline-block; font-size: 0.7rem; text-transform: uppercase;
+      letter-spacing: 0.04em; color: var(--muted); border: 1px solid var(--border);
+      border-radius: 999px; padding: 0.1rem 0.45rem; margin-left: 0.35rem;
+    }
+    .steps { margin: 0; padding-left: 1.15rem; color: var(--muted); font-size: 0.9rem; }
+    .steps li { margin: 0.35rem 0; }
+    .steps strong { color: var(--text); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <h1>Slack ↔ WxO MCP Gateway</h1>
+      <p class="sub">
+        Admin · multi-channel routing · MCP tools · diagnostics
+        <span class="pill" id="health">…</span>
+      </p>
+      <nav class="tabs">
+        <button class="tab active" data-tab="bindings">Bindings</button>
+        <button class="tab" data-tab="config">Config</button>
+        <button class="tab" data-tab="logs">Logs</button>
+        <button class="tab" data-tab="tools">MCP Tools</button>
+        <button class="tab" data-tab="diag">Diagnostics</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- BINDINGS -->
+    <section class="panel active" id="panel-bindings">
+      <div class="card">
+        <h2>Channel → agent bindings</h2>
+        <p class="hint">
+          Each Slack channel can map to a different WxO agent. One gateway process hosts all bindings.
+        </p>
+        <div id="bindings">Loading…</div>
+        <div class="row" style="margin-top:0.85rem;">
+          <button class="secondary" id="btn-refresh-bindings">Refresh</button>
+          <button class="secondary" id="btn-poll-now">Poll once</button>
+          <span class="msg" id="bindings-msg"></span>
+        </div>
+      </div>
+      <div class="card">
+        <h2>How to configure multiple agents / channels</h2>
+        <ol class="steps">
+          <li><strong>Invite the bot</strong> to each Slack channel (<code>/invite @your-bot</code>).</li>
+          <li><strong>Copy channel IDs</strong> (Slack → channel details → Channel ID, e.g. <code>C0…</code>).</li>
+          <li><strong>Copy agent IDs</strong> from WxO (or use answer-only agents for <code>gateway_thread</code>).</li>
+          <li>Add one entry under <code>bindings:</code> in the <strong>Config</strong> tab (see multi-channel example).</li>
+          <li>Save — poller reloads on the next cycle. Prefer <code>reply_mode: gateway_thread</code> + an answer-only agent.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- CONFIG -->
+    <section class="panel" id="panel-config">
+      <div class="card">
+        <h2>Edit <code>config.yaml</code></h2>
+        <p class="hint">
+          Secrets may use <code>${ENV_VAR}</code>. Saving reloads gateway config (poller picks up next cycle).
+          Path: <code id="cfg-path">…</code>
+        </p>
+        <textarea id="raw" spellcheck="false"></textarea>
+        <div class="row" style="margin-top:0.75rem;">
+          <button id="save">Save config</button>
+          <button class="secondary" id="reload">Reload</button>
+          <button class="secondary" id="btn-insert-multi">Insert multi-channel example</button>
+          <span class="msg" id="msg"></span>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Endpoints</h2>
+        <ul class="steps" style="padding-left:1.15rem;">
+          <li>Admin UI: <code>/</code></li>
+          <li>MCP (streamable HTTP): <code>/mcp</code></li>
+          <li>Slack Events: <code>/slack/events</code></li>
+          <li>Health: <code>/health</code></li>
+          <li>Logs API: <code>/api/logs</code></li>
+          <li>Diagnostics: <code>POST /api/diagnostics</code></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- LOGS -->
+    <section class="panel" id="panel-logs">
+      <div class="card">
+        <h2>Live log viewer</h2>
+        <p class="hint">In-memory ring buffer (last ~2500 lines). Survives until process restart.</p>
+        <div class="grid2" style="margin-bottom:0.75rem;">
+          <div>
+            <label>Level</label>
+            <select id="log-level">
+              <option value="ALL">ALL</option>
+              <option value="DEBUG">DEBUG+</option>
+              <option value="INFO" selected>INFO+</option>
+              <option value="WARNING">WARNING+</option>
+              <option value="ERROR">ERROR+</option>
+            </select>
+          </div>
+          <div>
+            <label>Filter</label>
+            <input id="log-q" placeholder="poller, noise, run_id…" />
+          </div>
+        </div>
+        <div class="row" style="margin-bottom:0.65rem;">
+          <label style="display:flex;align-items:center;gap:0.4rem;margin:0;color:var(--text);">
+            <input type="checkbox" id="log-follow" checked style="width:auto;" /> Follow
+          </label>
+          <button class="secondary" id="btn-log-refresh">Refresh</button>
+          <button class="secondary" id="btn-log-pause">Pause</button>
+          <button class="danger" id="btn-log-clear">Clear</button>
+          <span class="pill" id="log-count">0</span>
+        </div>
+        <div class="log-box" id="log-box"></div>
+      </div>
+    </section>
+
+    <!-- TOOLS -->
+    <section class="panel" id="panel-tools">
+      <div class="card">
+        <h2>Available MCP tools</h2>
+        <p class="hint">
+          Connect clients to <code id="mcp-endpoint">/mcp</code>
+          (<span class="pill" id="mcp-transport">streamable_http</span>
+        </p>
+        <div id="tools-impl">Loading…</div>
+      </div>
+      <div class="card">
+        <h2>Suggested next tools</h2>
+        <p class="hint">Useful additions if you want agents/admin flows to self-configure or enrich context.</p>
+        <div id="tools-sug">Loading…</div>
+      </div>
+    </section>
+
+    <!-- DIAG -->
+    <section class="panel" id="panel-diag">
+      <div class="card">
+        <h2>Diagnostic tests</h2>
+        <p class="hint">Checks Slack auth, channel history, WxO token, and optionally a short agent invoke.</p>
+        <div class="grid2" style="margin-bottom:0.75rem;">
+          <div>
+            <label>Channel binding (optional)</label>
+            <select id="diag-channel"><option value="">(first enabled binding)</option></select>
+          </div>
+          <div style="display:flex;align-items:flex-end;">
+            <label style="display:flex;align-items:center;gap:0.45rem;margin:0;color:var(--text);">
+              <input type="checkbox" id="diag-invoke" style="width:auto;" />
+              Also invoke agent (slower)
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <button id="btn-diag-run">Run diagnostics</button>
+          <span class="msg" id="diag-msg"></span>
+        </div>
+        <div id="diag-results" style="margin-top:1rem;"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    let logSince = 0;
+    let logTimer = null;
+    let logPaused = false;
+
+    /** Same-origin fetch; include Basic Auth credentials after browser login prompt. */
+    async function api(url, opts = {}) {
+      const r = await fetch(url, { credentials: "same-origin", ...opts });
+      if (r.status === 401) {
+        throw new Error("Unauthorized — refresh and sign in (Basic Auth).");
+      }
+      return r;
+    }
+
+    /* tabs */
+    document.querySelectorAll(".tab").forEach((btn) => {
+      btn.onclick = () => {
+        document.querySelectorAll(".tab").forEach((b) => b.classList.remove("active"));
+        document.querySelectorAll(".panel").forEach((p) => p.classList.remove("active"));
+        btn.classList.add("active");
+        $("panel-" + btn.dataset.tab).classList.add("active");
+        if (btn.dataset.tab === "logs") startLogPoll();
+        if (btn.dataset.tab === "tools") loadTools();
+        if (btn.dataset.tab === "diag") fillDiagChannels();
+      };
+    });
+
+    function esc(s) {
+      return String(s ?? "")
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    async function refreshHealthAndBindings() {
+      const h = await api("/health").then((r) => r.json());
+      const el = $("health");
+      el.textContent = `${h.status} · ${h.bindings || 0} bindings · poller ${h.poller ? "on" : "off"}${h.admin_auth ? " · auth" : ""}`;
+      el.className = "pill " + (h.status === "ok" ? "on" : "off");
+
+      const pub = await api("/api/config").then((r) => r.json());
+      const rows = (pub.bindings || []).map((b) => {
+        const ready = b.slack_channel_id && b.wxo?.agent_id && b.wxo?.instance_url;
+        return `<tr>
+          <td><strong>${esc(b.name)}</strong><div class="pill ${b.enabled ? "on" : "off"}">${b.enabled ? "enabled" : "off"}</div></td>
+          <td><code>${esc(b.slack_channel_id)}</code></td>
+          <td><code>${esc(b.wxo?.agent_id || "")}</code><div style="color:var(--muted);font-size:0.75rem;margin-top:0.2rem;">${esc(b.wxo?.instance_url || "")}</div></td>
+          <td>${esc(b.mode)}<div style="color:var(--muted);font-size:0.75rem;">${esc(b.poll_sec)}s</div></td>
+          <td>${esc(b.reply_mode)}</td>
+          <td><span class="pill ${ready ? "on" : "warn"}">${ready ? "ready" : "incomplete"}</span></td>
+        </tr>`;
+      }).join("");
+      $("bindings").innerHTML = `<table>
+        <thead><tr>
+          <th>Name</th><th>Slack channel</th><th>WxO agent</th><th>Wake</th><th>Reply</th><th>Status</th>
+        </tr></thead>
+        <tbody>${rows || "<tr><td colspan=6>No bindings yet — add some in Config</td></tr>"}</tbody>
+      </table>`;
+
+      window.__bindings = pub.bindings || [];
+      fillDiagChannels();
+    }
+
+    async function refreshConfig() {
+      const raw = await api("/api/config/raw").then((r) => r.json());
+      $("raw").value = raw.yaml || "";
+      $("cfg-path").textContent = raw.path || "config.yaml";
+    }
+
+    $("btn-refresh-bindings").onclick = () =>
+      refreshHealthAndBindings().catch((e) => { $("bindings-msg").textContent = String(e); $("bindings-msg").className = "msg err"; });
+
+    $("btn-poll-now").onclick = async () => {
+      $("bindings-msg").textContent = "Polling…";
+      $("bindings-msg").className = "msg";
+      try {
+        const r = await api("/api/poll", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.error || "poll failed");
+        $("bindings-msg").textContent = "Polled: " + (d.bindings || []).join(", ");
+      } catch (e) {
+        $("bindings-msg").textContent = String(e.message || e);
+        $("bindings-msg").className = "msg err";
+      }
+    };
+
+    $("reload").onclick = () => refreshConfig().catch(console.error);
+    $("save").onclick = async () => {
+      $("msg").textContent = "";
+      $("msg").className = "msg";
+      try {
+        const yaml = $("raw").value;
+        const r = await api("/api/config/raw", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ yaml }),
+        });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.detail || d.error || "save failed");
+        $("msg").textContent = "Saved.";
+        await refreshHealthAndBindings();
+      } catch (e) {
+        $("msg").textContent = String(e.message || e);
+        $("msg").className = "msg err";
+      }
+    };
+
+    $("btn-insert-multi").onclick = async () => {
+      const d = await api("/api/example-multi").then((r) => r.json());
+      const ta = $("raw");
+      const marker = "\n# --- multi-channel example (edit IDs, then merge into bindings:) ---\n";
+      if (!ta.value.includes("sales_channel")) {
+        ta.value = ta.value.trimEnd() + "\n" + marker + (d.yaml || "") + "\n";
+      }
+      $("msg").textContent = "Example appended — merge into bindings carefully, then Save.";
+      $("msg").className = "msg";
+    };
+
+    /* logs */
+    function renderLogEntries(entries, append) {
+      const box = $("log-box");
+      const html = entries.map((e) => {
+        const t = new Date((e.ts || 0) * 1000).toISOString().slice(11, 23);
+        return `<div class="log-line ${esc(e.level)}"><span class="ts">${t}</span> <span class="lvl">${esc(e.level)}</span> <span style="color:#6d7f99">${esc(e.logger)}</span> ${esc(e.message)}</div>`;
+      }).join("");
+      if (append) box.insertAdjacentHTML("beforeend", html);
+      else box.innerHTML = html || "<div class='hint'>No log lines yet.</div>";
+      if ($("log-follow").checked && !logPaused) box.scrollTop = box.scrollHeight;
+      $("log-count").textContent = (append ? Number($("log-count").textContent || 0) + entries.length : entries.length) + " shown";
+    }
+
+    async function fetchLogs({ full = false } = {}) {
+      const level = $("log-level").value;
+      const q = $("log-q").value.trim();
+      const params = new URLSearchParams({
+        limit: full ? "300" : "100",
+        level,
+        since_id: full ? "0" : String(logSince),
+      });
+      if (q) params.set("q", q);
+      const d = await api("/api/logs?" + params).then((r) => r.json());
+      const entries = d.entries || [];
+      if (full) {
+        renderLogEntries(entries, false);
+      } else if (entries.length) {
+        renderLogEntries(entries, true);
+      }
+      if (d.latest_id) logSince = d.latest_id;
+    }
+
+    function startLogPoll() {
+      if (logTimer) return;
+      fetchLogs({ full: true }).catch(console.error);
+      logTimer = setInterval(() => {
+        if (logPaused) return;
+        fetchLogs({ full: false }).catch(() => {});
+      }, 2000);
+    }
+
+    $("btn-log-refresh").onclick = () => fetchLogs({ full: true }).catch(console.error);
+    $("btn-log-pause").onclick = () => {
+      logPaused = !logPaused;
+      $("btn-log-pause").textContent = logPaused ? "Resume" : "Pause";
+    };
+    $("btn-log-clear").onclick = async () => {
+      await api("/api/logs", { method: "DELETE" });
+      logSince = 0;
+      $("log-box").innerHTML = "";
+      $("log-count").textContent = "0";
+    };
+    $("log-level").onchange = () => { logSince = 0; fetchLogs({ full: true }); };
+    $("log-q").onkeydown = (e) => {
+      if (e.key === "Enter") { logSince = 0; fetchLogs({ full: true }); }
+    };
+
+    /* tools */
+    async function loadTools() {
+      const d = await api("/api/tools").then((r) => r.json());
+      $("mcp-endpoint").textContent = d.endpoint || "/mcp";
+      $("mcp-transport").textContent = d.transport || "streamable_http";
+      $("tools-impl").innerHTML = (d.implemented || []).map((t) => `
+        <div class="tool">
+          <h3>${esc(t.name)}<span class="cat">${esc(t.category || "")}</span></h3>
+          <div class="hint" style="margin:0;">${esc(t.description)}</div>
+          <div style="margin-top:0.35rem;color:var(--muted);font-size:0.8rem;">
+            params: ${(t.params || []).map((p) => `<code>${esc(p)}</code>`).join(" ") || "<em>none</em>"}
+          </div>
+        </div>`).join("") || "None";
+      $("tools-sug").innerHTML = (d.suggested || []).map((t) => `
+        <div class="tool">
+          <h3>${esc(t.name)}</h3>
+          <div class="hint" style="margin:0;">${esc(t.description)}</div>
+          <div style="margin-top:0.35rem;font-size:0.85rem;color:var(--warn);">Why: ${esc(t.why)}</div>
+        </div>`).join("") || "None";
+    }
+
+    /* diagnostics */
+    function fillDiagChannels() {
+      const sel = $("diag-channel");
+      const cur = sel.value;
+      const opts = ['<option value="">(first enabled binding)</option>'];
+      (window.__bindings || []).forEach((b) => {
+        if (!b.enabled) return;
+        opts.push(`<option value="${esc(b.slack_channel_id)}">${esc(b.name)} — ${esc(b.slack_channel_id)}</option>`);
+      });
+      sel.innerHTML = opts.join("");
+      if (cur) sel.value = cur;
+    }
+
+    $("btn-diag-run").onclick = async () => {
+      $("diag-msg").textContent = "Running…";
+      $("diag-msg").className = "msg";
+      $("diag-results").innerHTML = "";
+      try {
+        const r = await api("/api/diagnostics", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            invoke_test: $("diag-invoke").checked,
+            channel_id: $("diag-channel").value || null,
+          }),
+        });
+        const d = await r.json();
+        $("diag-msg").textContent = (d.ok ? "All checks passed" : "Some checks failed") + ` · ${d.elapsed_ms}ms`;
+        $("diag-msg").className = "msg" + (d.ok ? "" : " err");
+        $("diag-results").innerHTML = (d.checks || []).map((c) => `
+          <div class="check">
+            <div class="dot ${c.ok ? "ok" : "bad"}"></div>
+            <div>
+              <strong>${esc(c.name)}</strong>
+              <div class="hint" style="margin:0.15rem 0 0;">${esc(c.detail)}</div>
+            </div>
+          </div>`).join("");
+      } catch (e) {
+        $("diag-msg").textContent = String(e.message || e);
+        $("diag-msg").className = "msg err";
+      }
+    };
+
+    /* boot */
+    Promise.all([refreshHealthAndBindings(), refreshConfig()])
+      .then(() => startLogPoll())
+      .catch((e) => { $("msg").textContent = String(e); $("msg").className = "msg err"; });
+  </script>
+</body>
+</html>

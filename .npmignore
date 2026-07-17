@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+config.yaml
+.run/
+__pycache__/
+*.pyc
+.DS_Store
+.deps-ok
+*.log
+.git/
+.github/
+node_modules/
+*.tgz

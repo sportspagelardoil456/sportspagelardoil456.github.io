@@ -1,0 +1,44 @@
+# Slack ↔ WxO MCP Gateway — multi-channel / multi-agent bindings
+# Copy to config.yaml and fill in (or use ${ENV_VAR} expansion).
+#
+# Mental model:
+#   Slack channel  →  this gateway  →  WxO agent
+# Configure all mappings here (or via the web UI at http://localhost:3100/).
+
+slack:
+  bot_token: ${SLACK_BOT_TOKEN}
+  signing_secret: ${SLACK_SIGNING_SECRET}
+
+wxo_defaults:
+  token_url: ${WO_MCSP_TOKEN_URL:-https://iam.platform.saas.ibm.com/siusermgr/api/1.0/apikeys/token}
+  instance_url: ${WXO_INSTANCE_URL}
+  api_key: ${WXO_API_KEY}
+
+# One row per Slack channel → WxO agent binding (add more rows for more channels)
+bindings:
+  - name: demo_channel
+    enabled: true
+    slack_channel_id: C0BHWEZ7NLC
+    # poll | events | both
+    mode: poll
+    poll_sec: 4
+    lookback_sec: 600
+    # gateway_thread = gateway posts Slack thread after Runs API
+    #   → use answer-only agent (slack_gateway_answer_agent), NOT slack_support_agent
+    #   → avoids flat/thread "done" from Option B agents
+    # agent_tools    = only start agent; agent tools post (e.g. post_slack_reply)
+    reply_mode: gateway_thread
+    wxo:
+      # inherit instance_url / api_key from wxo_defaults if omitted
+      # Prefer slack_gateway_answer_agent id for gateway_thread mode
+      agent_id: ${WXO_AGENT_ID}
+
+  # Example second channel → different agent (uncomment + fill IDs):
+  # - name: sales_channel
+  #   enabled: true
+  #   slack_channel_id: C0123456789
+  #   mode: poll
+  #   poll_sec: 5
+  #   reply_mode: gateway_thread
+  #   wxo:
+  #     agent_id: ${WXO_SALES_AGENT_ID}

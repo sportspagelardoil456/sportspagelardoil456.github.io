@@ -1,0 +1,6 @@
+mcp>=1.6.0
+uvicorn[standard]>=0.32.0
+starlette>=0.40.0
+requests>=2.32.0
+python-dotenv>=1.0.0
+PyYAML>=6.0
