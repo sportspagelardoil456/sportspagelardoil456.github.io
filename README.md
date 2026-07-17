@@ -1,8 +1,10 @@
 # Slack ↔ WxO MCP Gateway
 
-**npm:** [`@markusvankempen/slack-wxo-mcp-gateway`](https://www.npmjs.com/package/@markusvankempen/slack-wxo-mcp-gateway)  
-**GitHub:** [https://github.com/markusvankempen/slack-wxo-mcp-gateway](https://github.com/markusvankempen/slack-wxo-mcp-gateway)  
+**GitHub (docs):** [https://github.com/markusvankempen/slack-wxo-mcp-gateway](https://github.com/markusvankempen/slack-wxo-mcp-gateway)  
+**npm (planned):** [`@markusvankempen/slack-wxo-mcp-gateway`](https://www.npmjs.com/package/@markusvankempen/slack-wxo-mcp-gateway)  
 **Author:** [Markus van Kempen](https://github.com/markusvankempen)
+
+> This repository publishes **documentation only**. Application source is not included here (yet).
 
 Hosted gateway that makes the “every Slack message → watsonx Orchestrate agent” story easy to reuse:
 
@@ -14,48 +16,20 @@ WxO `byo_slack` still only does @mention/DM. This gateway is the custom integrat
 
 ---
 
-## Install & run
+## Quick start (hosted)
 
-### Via npm / npx (recommended)
+1. Deploy or run your gateway host (private build / npm when published).
+2. Copy [`.env.example`](.env.example) → `.env` and [`config.example.yaml`](config.example.yaml) → `config.yaml`.
+3. Open the admin UI (default `http://localhost:3100/`) — bindings, config, logs, MCP tools, diagnostics.
+4. Register `/mcp` with watsonx Orchestrate or your MCP client (see below).
 
-Requires **Node 18+** and **Python 3.10+**.
+### Via npm / npx (when published)
 
 ```bash
-cp .env.example .env                 # SLACK_BOT_TOKEN, WXO_* …
-cp config.example.yaml config.yaml   # set slack_channel_id + agent_id
-
 npx @markusvankempen/slack-wxo-mcp-gateway
 ```
 
-Or install globally:
-
-```bash
-npm install -g @markusvankempen/slack-wxo-mcp-gateway
-slack-wxo-mcp-gateway
-```
-
-Open **http://localhost:3100/** — admin UI (bindings, config, live logs, MCP tools, diagnostics).
-
-### From source (this repo)
-
-```bash
-git clone https://github.com/markusvankempen/slack-wxo-mcp-gateway.git
-cd slack-wxo-mcp-gateway
-cp .env.example .env
-cp config.example.yaml config.yaml
-python3 -m pip install -r requirements.txt
-# package root must be importable as slack_mcp_gateway:
-PYTHONPATH=.. python3 -m slack_mcp_gateway
-# or:
-npx .
-```
-
-Full path (ngrok + WxO toolkit):
-
-```bash
-./deploy_e2e.sh
-./stop.sh
-```
+Requires Node 18+ and Python 3.10+.
 
 ---
 
