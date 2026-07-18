@@ -1,36 +1,34 @@
-# Publish — npm + MCP Registry + GitHub
+# Publish — docs (public) · source (private) · npm
 
 **Author:** Markus van Kempen  
 **Email:** [mvankempen@ca.ibm.com](mailto:mvankempen@ca.ibm.com) · [markus.van.kempen@gmail.com](mailto:markus.van.kempen@gmail.com)  
 **Web:** [https://markusvankempen.github.io/](https://markusvankempen.github.io/) · [GitHub](https://github.com/markusvankempen)
 
-| Surface | URL |
-|---------|-----|
-| npm | [`@markusvankempen/slack-wxo-mcp-gateway`](https://www.npmjs.com/package/@markusvankempen/slack-wxo-mcp-gateway) |
-| MCP Registry | `io.github.markusvankempen/slack-wxo-mcp-gateway` |
-| GitHub (source + docs) | [slack-wxo-mcp-gateway](https://github.com/markusvankempen/slack-wxo-mcp-gateway) |
-| GitHub (private mirror) | [slack-wxo-mcp-gateway-dev](https://github.com/markusvankempen/slack-wxo-mcp-gateway-dev) |
-| Site | [https://markusvankempen.github.io/](https://markusvankempen.github.io/) |
+| Surface | What’s published | URL |
+|---------|------------------|-----|
+| GitHub **public** | Docs + metadata only (no app source) | [slack-wxo-mcp-gateway](https://github.com/markusvankempen/slack-wxo-mcp-gateway) |
+| GitHub **private** | Full application source + docs | [slack-wxo-mcp-gateway-dev](https://github.com/markusvankempen/slack-wxo-mcp-gateway-dev) |
+| npm | Installable package | [`@markusvankempen/slack-wxo-mcp-gateway`](https://www.npmjs.com/package/@markusvankempen/slack-wxo-mcp-gateway) |
+| MCP Registry | `server.json` manifest | `io.github.markusvankempen/slack-wxo-mcp-gateway` |
+| Site | Agentic AI Bridge | [https://markusvankempen.github.io/](https://markusvankempen.github.io/) |
 
-**Run modes A–D:** [`docs/PUBLISH-MODES.md`](docs/PUBLISH-MODES.md) · `./scripts/run.sh --mode http|podman|ce|ide`
+**Public GitHub must never contain** `*.py`, `bin/`, `ui.html`, `Dockerfile`, `requirements.txt`, or deploy/run scripts.
 
 ---
 
-## 1. Sync to GitHub
-
-Public repo = **full npm package** (Python source, `bin/`, docs, `server.json`).
+## 1. Sync GitHub
 
 ```bash
 gh auth switch --user markusvankempen
-./scripts/sync-public-repo.sh
-./scripts/sync-private-repo.sh   # optional private mirror
+./scripts/sync-public-repo.sh    # docs only
+./scripts/sync-private-repo.sh   # full source
 ```
 
 Never push `.env`, `config.yaml`, `.run/`, `.mcpregistry*`, or secrets.
 
 ---
 
-## 2. Publish npm + MCP Registry
+## 2. Publish npm + MCP Registry (from private / local full tree)
 
 ```bash
 npm login
@@ -39,14 +37,7 @@ mcp-publisher login github
 mcp-publisher publish
 ```
 
-Bump `package.json` + `server.json` `version` before each publish (npm versions are immutable).
-
-| Field | Value |
-|-------|--------|
-| `name` | `@markusvankempen/slack-wxo-mcp-gateway` |
-| `mcpName` | `io.github.markusvankempen/slack-wxo-mcp-gateway` |
-| `homepage` / `websiteUrl` | `https://markusvankempen.github.io/` |
-| `repository` | `https://github.com/markusvankempen/slack-wxo-mcp-gateway.git` |
+Bump `package.json` + `server.json` `version` before each publish.
 
 ---
 
@@ -54,6 +45,6 @@ Bump `package.json` + `server.json` `version` before each publish (npm versions 
 
 | Client | How |
 |--------|-----|
+| Install | `npx -y @markusvankempen/slack-wxo-mcp-gateway` |
 | watsonx Orchestrate | Toolkit URL `https://YOUR_HOST/mcp` (`streamable_http`) |
-| Cursor / Claude | Remote `/mcp` or `npx -y mcp-remote …` |
-| Local / IDE stdio | `npx -y @markusvankempen/slack-wxo-mcp-gateway --stdio` |
+| IDE stdio | `npx -y @markusvankempen/slack-wxo-mcp-gateway --stdio` |

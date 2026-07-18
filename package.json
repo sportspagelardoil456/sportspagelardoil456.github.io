@@ -4,49 +4,6 @@
   "description": "Lifts watsonx Orchestrate Slack limits: every-message wake-up (beyond byo_slack @mention/DM), multi-channel→multi-agent routing, clean gateway_thread replies, streamable-http /mcp for WxO + Cursor/VS Code/Bob/Antigravity/LangGraph. By Markus van Kempen — https://markusvankempen.github.io/",
   "mcpName": "io.github.markusvankempen/slack-wxo-mcp-gateway",
   "type": "commonjs",
-  "bin": {
-    "slack-wxo-mcp-gateway": "bin/slack-wxo-mcp-gateway.js"
-  },
-  "scripts": {
-    "start": "node bin/slack-wxo-mcp-gateway.js",
-    "prepublishOnly": "node -e \"require('fs').accessSync('bin/slack-wxo-mcp-gateway.js')\"",
-    "github:metadata": "bash scripts/apply-github-metadata.sh",
-    "sync:public": "bash scripts/sync-public-repo.sh",
-    "sync:private": "bash scripts/sync-private-repo.sh",
-    "run:http": "bash scripts/run.sh --mode http",
-    "run:podman": "bash scripts/run.sh --mode podman",
-    "run:ce": "bash scripts/run.sh --mode ce",
-    "run:ide": "bash scripts/run.sh --mode ide",
-    "test:modes": "bash scripts/test_publish_modes.sh",
-    "publish:npm": "npm publish --access public",
-    "publish:mcp": "mcp-publisher publish"
-  },
-  "files": [
-    "bin/",
-    "*.py",
-    "agents/",
-    "docs/",
-    "examples/",
-    "requirements.txt",
-    "config.example.yaml",
-    ".env.example",
-    "ui.html",
-    "Dockerfile",
-    ".dockerignore",
-    "agent.yaml",
-    "deploy_e2e.sh",
-    "deploy_code_engine.sh",
-    "test_code_engine.sh",
-    "test_tools_e2e.sh",
-    "stop.sh",
-    "README.md",
-    "SETUP.md",
-    "USE_CASES.md",
-    "PUBLISH.md",
-    "LICENSE",
-    "server.json",
-    "scripts/"
-  ],
   "engines": {
     "node": ">=18"
   },
@@ -127,5 +84,10 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "scripts": {
+    "github:metadata": "bash scripts/apply-github-metadata.sh",
+    "sync:public": "bash scripts/sync-public-repo.sh"
+  },
+  "private": true
 }

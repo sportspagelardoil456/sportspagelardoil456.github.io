@@ -6,6 +6,9 @@
 
 **npm:** [`@markusvankempen/slack-wxo-mcp-gateway`](https://www.npmjs.com/package/@markusvankempen/slack-wxo-mcp-gateway) · **MCP:** `io.github.markusvankempen/slack-wxo-mcp-gateway`
 
+> **This GitHub repo is documentation + registry metadata.** It does **not** include the runnable application source.  
+> **Install / run via npm:** `npx -y @markusvankempen/slack-wxo-mcp-gateway` · Site: [https://markusvankempen.github.io/](https://markusvankempen.github.io/)
+
 **Pitch:** MCP gateway that **lifts watsonx Orchestrate Slack limitations** — every-message wake-up, multi-channel→multi-agent routing, clean in-thread replies, and a streamable-http toolkit for WxO + Cursor / VS Code / Bob / Antigravity — without replacing your agents.
 
 `tags:` `wxo-limitations` · `byo-slack` · `every-message` · `multi-channel` · `multi-agent` · `thread-followups` · `gateway-thread` · `no-done-noise` · `mcp-toolkit` · `streamable-http` · `poller` · `code-engine` · `ngrok` · `agentic-ai`
@@ -82,7 +85,7 @@ Connect frameworks **to** this MCP — do not embed them in the gateway.
 | [`docs/frameworks/llamaindex.md`](docs/frameworks/llamaindex.md) | LlamaIndex |
 | [`docs/frameworks/openai-agents.md`](docs/frameworks/openai-agents.md) | OpenAI Agents SDK |
 
-### Install (npm / npx)
+### Install (npm / npx) — not from this repo
 
 ```bash
 # Hosted HTTP + admin UI (default)
@@ -92,7 +95,7 @@ npx -y @markusvankempen/slack-wxo-mcp-gateway
 npx -y @markusvankempen/slack-wxo-mcp-gateway --stdio
 ```
 
-Requires Node 18+ and Python 3.10+. Copy [`.env.example`](.env.example) → `.env`, then see [local-ngrok](docs/local-ngrok/) or [code-engine](docs/code-engine/).
+Requires Node 18+ and Python 3.10+. Env template: [`.env.example`](.env.example). Guides: [local-ngrok](docs/local-ngrok/) · [code-engine](docs/code-engine/).
 
 ---
 
