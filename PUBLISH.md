@@ -7,6 +7,16 @@
 This GitHub repository is **documentation only** for now (no application source).  
 All npm / MCP package references should still point at `https://github.com/markusvankempen`.
 
+**Run modes A–D** (one package, switches — not four MCP servers):  
+[`docs/PUBLISH-MODES.md`](docs/PUBLISH-MODES.md) · `./scripts/run.sh --mode http|podman|ce|ide`
+
+| Mode | Command |
+|------|---------|
+| A Local HTTP | `./scripts/run.sh --mode http` |
+| B Podman/Docker | `./scripts/run.sh --mode podman` |
+| C Code Engine | `./scripts/run.sh --mode ce` |
+| D Cursor/VS Code IDE | `./scripts/run.sh --mode ide` |
+
 ---
 
 ## 1. Sync docs to GitHub
@@ -17,16 +27,7 @@ From the private project tree:
 ./scripts/sync-public-repo.sh
 ```
 
-Pushes only:
-
-- `README.md`
-- `USE_CASES.md`
-- `PUBLISH.md`
-- `LICENSE`
-- `config.example.yaml`
-- `.env.example`
-
-Never push `.env`, `config.yaml`, `.run/`, or source code.
+Never push `.env`, `config.yaml`, `.run/`, or application source.
 
 ---
 

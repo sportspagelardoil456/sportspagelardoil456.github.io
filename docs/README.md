@@ -4,14 +4,18 @@
 **Email:** [mvankempen@ca.ibm.com](mailto:mvankempen@ca.ibm.com) · [markus.van.kempen@gmail.com](mailto:markus.van.kempen@gmail.com)  
 **Web:** [https://markusvankempen.github.io/](https://markusvankempen.github.io/) · [GitHub](https://github.com/markusvankempen)
 
-Choose **one** deployment path. Each has its own directory so steps, URLs, and pitfalls stay distinct.
+**One MCP — four ship modes** (switches, not separate packages):
 
-| Path | Directory | When to use |
-|------|-----------|-------------|
-| **Local + ngrok** | [`local-ngrok/`](local-ngrok/) | Dev / demo on your laptop; public HTTPS via ngrok tunnel |
-| **IBM Code Engine** | [`code-engine/`](code-engine/) | Always-on hosted gateway; stable URL for Slack + WxO |
+| Mode | Guide | Wrapper |
+|------|--------|---------|
+| **A** Local host | [`local-ngrok/`](local-ngrok/) | `./scripts/run.sh --mode http` |
+| **B** Docker / Podman | [`PUBLISH-MODES.md`](PUBLISH-MODES.md)#b--docker--podman | `./scripts/run.sh --mode podman` |
+| **C** Code Engine | [`code-engine/`](code-engine/) | `./scripts/run.sh --mode ce` |
+| **D** Cursor / VS Code IDE | [`ide/`](ide/) · [`PUBLISH-MODES.md`](PUBLISH-MODES.md)#d--vs-code--cursor-ide-mcp | `./scripts/run.sh --mode ide` |
 
-Shared (both paths):
+Full matrix: **[PUBLISH-MODES.md](PUBLISH-MODES.md)**
+
+Shared:
 
 - **[WHY-THIS-MCP.md](WHY-THIS-MCP.md)** — how this gateway lifts WxO Slack limitations (with tags)  
 - [SETUP.md](../SETUP.md) — Slack scopes, WxO agents, env overview  

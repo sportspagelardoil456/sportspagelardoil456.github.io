@@ -47,25 +47,29 @@ Full keyword list lives in [`package.json`](package.json) for npm discoverabilit
 
 ---
 
-## Choose a deployment path
+## Publish & run modes (A–D)
 
-Documentation is split so each path stays clear:
+**One package / one image** — pick a mode (see [`docs/PUBLISH-MODES.md`](docs/PUBLISH-MODES.md)):
 
-| Path | Guide |
-|------|--------|
-| **Local + ngrok** | [`docs/local-ngrok/`](docs/local-ngrok/) — laptop gateway + tunnel + WxO toolkit |
-| **IBM Code Engine** | [`docs/code-engine/`](docs/code-engine/) — always-on app + stable `/mcp` URL |
+| Mode | Command | Use |
+|------|---------|-----|
+| **A** Local HTTP | `./scripts/run.sh --mode http` | UI + `/mcp` + poller on laptop |
+| **B** Podman/Docker | `./scripts/run.sh --mode podman` | Same app in a container |
+| **C** Code Engine | `./scripts/run.sh --mode ce` | Always-on HTTPS |
+| **D** IDE MCP | `./scripts/run.sh --mode ide` | Cursor / VS Code stdio snippets (+ `--exec`) |
+| Ngrok demo | `./scripts/run.sh --mode ngrok` | A + tunnel + WxO toolkit |
 
-Index: [`docs/README.md`](docs/README.md) · Shared Slack/WxO setup: [`SETUP.md`](SETUP.md)
+```bash
+./scripts/run.sh --mode ide      # print Cursor + VS Code mcp.json
+./scripts/run.sh --mode http     # local host :3100
+./scripts/run.sh --mode podman   # container :8080
+./scripts/run.sh --mode ce       # IBM Code Engine
+```
 
-## IDE clients (Cursor · VS Code · Bob · Antigravity · Claude)
+Deep guides: [`docs/local-ngrok/`](docs/local-ngrok/) · [`docs/code-engine/`](docs/code-engine/) · [`docs/ide/`](docs/ide/)  
+Index: [`docs/README.md`](docs/README.md) · Setup: [`SETUP.md`](SETUP.md)
 
-| Mode | How |
-|------|-----|
-| **Remote** | Point at `https://YOUR_HOST/mcp` — see [`docs/ide/`](docs/ide/) |
-| **Local stdio** | `npx @markusvankempen/slack-wxo-mcp-gateway --stdio` with `GATEWAY_TRANSPORT=stdio` |
-
-Copy-paste JSON: [`examples/mcp/`](examples/mcp/)
+Copy-paste IDE JSON: [`examples/mcp/`](examples/mcp/)
 
 ## Agent frameworks (LangGraph · LlamaIndex · OpenAI Agents)
 

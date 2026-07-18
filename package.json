@@ -11,7 +11,11 @@
     "start": "node bin/slack-wxo-mcp-gateway.js",
     "prepublishOnly": "node -e \"require('fs').accessSync('bin/slack-wxo-mcp-gateway.js')\"",
     "github:metadata": "bash scripts/apply-github-metadata.sh",
-    "sync:public": "bash scripts/sync-public-repo.sh"
+    "sync:public": "bash scripts/sync-public-repo.sh",
+    "run:http": "bash scripts/run.sh --mode http",
+    "run:podman": "bash scripts/run.sh --mode podman",
+    "run:ce": "bash scripts/run.sh --mode ce",
+    "run:ide": "bash scripts/run.sh --mode ide"
   },
   "files": [
     "bin/",
