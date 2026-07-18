@@ -1,0 +1,9 @@
+# Author: Markus van Kempen
+# Email: mvankempen@ca.ibm.com | markus.van.kempen@gmail.com
+# Web: https://markusvankempen.github.io/
+mcp>=1.6.0
+uvicorn[standard]>=0.32.0
+starlette>=0.40.0
+requests>=2.32.0
+python-dotenv>=1.0.0
+PyYAML>=6.0

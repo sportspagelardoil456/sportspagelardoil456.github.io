@@ -4,21 +4,21 @@
 # Email: mvankempen@ca.ibm.com | markus.van.kempen@gmail.com
 # Web: https://markusvankempen.github.io/
 # ---
-# Sync full npm package (source + docs) to public GitHub:
-#   github.com/markusvankempen/slack-wxo-mcp-gateway
+# Sync full application source + docs to private GitHub:
+#   github.com/markusvankempen/slack-wxo-mcp-gateway-dev
 #
 # Never pushes secrets (.env, config.yaml, .run/, tokens).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-DEST="${PUBLISH_DIR:-/tmp/slack-wxo-mcp-gateway-publish}"
+DEST="${PUBLISH_DIR:-/tmp/slack-wxo-mcp-gateway-dev}"
 STAGING="${DEST}.staging"
-REPO="markusvankempen/slack-wxo-mcp-gateway"
+REPO="markusvankempen/slack-wxo-mcp-gateway-dev"
 BRANCH="${PUBLISH_BRANCH:-main}"
 
-echo "==> Source: $ROOT (npm package: code + docs)"
+echo "==> Source: $ROOT (code + docs)"
 echo "==> Dest:   $DEST"
-echo "==> Repo:   $REPO (public)"
+echo "==> Repo:   $REPO (private)"
 
 if command -v gh >/dev/null 2>&1; then
   gh auth switch --user markusvankempen 2>/dev/null || true
@@ -27,6 +27,7 @@ fi
 rm -rf "$STAGING"
 mkdir -p "$STAGING"
 
+# Full tree minus secrets / junk (include before exclude — first match wins)
 rsync -a \
   --include '.env.example' \
   --exclude '.git/' \
@@ -70,6 +71,7 @@ venv/
 .npmrc
 EOF
 
+# Safety: never ship secrets even if they slipped past rsync
 rm -f "$STAGING/.env" "$STAGING/config.yaml"
 rm -f "$STAGING"/.mcpregistry* "$STAGING/.npmrc"
 rm -rf "$STAGING/.run"
@@ -77,15 +79,9 @@ rm -rf "$STAGING/.run"
 if [[ -f "$STAGING/.env" ]] || [[ -f "$STAGING/config.yaml" ]] || [[ -d "$STAGING/.run" ]] \
   || compgen -G "$STAGING/.mcpregistry*" >/dev/null; then
   echo "ERROR: secrets still present in staging — aborting" >&2
+  ls -la "$STAGING"/.env "$STAGING"/config.yaml "$STAGING"/.mcpregistry* 2>/dev/null || true
   exit 1
 fi
-
-for f in package.json server.json bin/slack-wxo-mcp-gateway.js README.md LICENSE server.py; do
-  if [[ ! -e "$STAGING/$f" ]]; then
-    echo "ERROR: missing package file in staging: $f" >&2
-    exit 1
-  fi
-done
 
 rm -rf "$DEST"
 
@@ -108,7 +104,7 @@ if git diff --cached --quiet; then
   echo "Nothing to commit."
 else
   git commit -m "$(cat <<'EOF'
-Publish npm package source + docs for @markusvankempen/slack-wxo-mcp-gateway.
+Publish code + docs to private slack-wxo-mcp-gateway-dev.
 
 EOF
 )"
@@ -116,25 +112,20 @@ fi
 
 if ! git remote get-url origin >/dev/null 2>&1; then
   gh repo create "$REPO" \
-    --public \
-    --description "Slack ↔ WxO MCP gateway — every-message wake-up, multi-channel routing. https://markusvankempen.github.io/" \
+    --private \
+    --description "Private: Slack ↔ watsonx Orchestrate MCP gateway (full source + docs)" \
     --homepage "https://markusvankempen.github.io/" \
     --source . \
     --remote origin \
     --push
   echo "==> Created and pushed https://github.com/${REPO}"
-  exit 0
-fi
-
-git push -u origin "HEAD:${BRANCH}"
-
-if [[ -x "$ROOT/scripts/apply-github-metadata.sh" ]]; then
-  bash "$ROOT/scripts/apply-github-metadata.sh" >/dev/null 2>&1 || true
 else
+  git push -u origin "HEAD:${BRANCH}"
   gh repo edit "$REPO" \
-    --description "Slack ↔ WxO MCP gateway — every-message wake-up, multi-channel routing. https://markusvankempen.github.io/" \
+    --description "Private: Slack ↔ watsonx Orchestrate MCP gateway (full source + docs)" \
     --homepage "https://markusvankempen.github.io/" \
     >/dev/null || true
+  echo "==> Pushed https://github.com/${REPO}"
 fi
 
-echo "==> Pushed npm package https://github.com/${REPO}"
+gh repo view "$REPO" --json name,visibility,url,description

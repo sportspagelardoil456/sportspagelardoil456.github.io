@@ -6,9 +6,6 @@
 
 **npm:** [`@markusvankempen/slack-wxo-mcp-gateway`](https://www.npmjs.com/package/@markusvankempen/slack-wxo-mcp-gateway) · **MCP:** `io.github.markusvankempen/slack-wxo-mcp-gateway`
 
-> **This public repo is documentation + package metadata.** Application source is **not** published here.  
-> Want the full gateway source? Ask: [markus.van.kempen@gmail.com](mailto:markus.van.kempen@gmail.com) · [mvankempen@ca.ibm.com](mailto:mvankempen@ca.ibm.com) · [https://markusvankempen.github.io/](https://markusvankempen.github.io/)
-
 **Pitch:** MCP gateway that **lifts watsonx Orchestrate Slack limitations** — every-message wake-up, multi-channel→multi-agent routing, clean in-thread replies, and a streamable-http toolkit for WxO + Cursor / VS Code / Bob / Antigravity — without replacing your agents.
 
 `tags:` `wxo-limitations` · `byo-slack` · `every-message` · `multi-channel` · `multi-agent` · `thread-followups` · `gateway-thread` · `no-done-noise` · `mcp-toolkit` · `streamable-http` · `poller` · `code-engine` · `ngrok` · `agentic-ai`
@@ -87,8 +84,6 @@ Connect frameworks **to** this MCP — do not embed them in the gateway.
 
 ### Install (npm / npx)
 
-After the package is published on npm (binary distribution — not this docs repo):
-
 ```bash
 # Hosted HTTP + admin UI (default)
 npx -y @markusvankempen/slack-wxo-mcp-gateway
@@ -97,7 +92,7 @@ npx -y @markusvankempen/slack-wxo-mcp-gateway
 npx -y @markusvankempen/slack-wxo-mcp-gateway --stdio
 ```
 
-Requires Node 18+ and Python 3.10+. For local deploy from source, request access (see note above), then follow [local-ngrok](docs/local-ngrok/) or [code-engine](docs/code-engine/).
+Requires Node 18+ and Python 3.10+. Copy [`.env.example`](.env.example) → `.env`, then see [local-ngrok](docs/local-ngrok/) or [code-engine](docs/code-engine/).
 
 ---
 

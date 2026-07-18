@@ -1,7 +1,7 @@
 {
   "public": {
     "repo": "markusvankempen/slack-wxo-mcp-gateway",
-    "description": "Docs for Slack↔WxO MCP gateway (source on request). Every-message wake-up, multi-channel routing. https://markusvankempen.github.io/",
+    "description": "npm @markusvankempen/slack-wxo-mcp-gateway — Slack↔WxO MCP: every-message wake-up, multi-channel routing, /mcp. https://markusvankempen.github.io/",
     "homepage": "https://markusvankempen.github.io/",
     "topics": [
       "mcp",

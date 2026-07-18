@@ -8,12 +8,12 @@
     "url": "https://github.com/markusvankempen/slack-wxo-mcp-gateway",
     "source": "github"
   },
-  "version": "1.0.1",
+  "version": "1.0.2",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "@markusvankempen/slack-wxo-mcp-gateway",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "runtimeHint": "npx",
       "transport": {
         "type": "stdio"
