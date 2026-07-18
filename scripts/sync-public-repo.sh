@@ -22,6 +22,7 @@ DOC_FILES=(
   .env.example
   agent.yaml
   package.json
+  server.json
 )
 
 # Example agent YAMLs + path-specific docs (not the Python gateway)
@@ -107,8 +108,8 @@ fi
 if ! git remote get-url origin >/dev/null 2>&1; then
   gh repo create "$REPO" \
     --public \
-    --description "Documentation for Slack ↔ watsonx Orchestrate MCP gateway" \
-    --homepage "https://github.com/${REPO}" \
+    --description "Documentation for Slack ↔ watsonx Orchestrate MCP gateway — https://markusvankempen.github.io/" \
+    --homepage "https://markusvankempen.github.io/" \
     --source . \
     --remote origin \
     --push
@@ -120,8 +121,8 @@ git push -u origin "HEAD:${BRANCH}"
 
 # Keep GitHub description aligned with docs-only intent
 gh repo edit "$REPO" \
-  --description "Documentation for Slack ↔ watsonx Orchestrate MCP gateway" \
-  --homepage "https://github.com/${REPO}" \
+  --description "Documentation for Slack ↔ watsonx Orchestrate MCP gateway — https://markusvankempen.github.io/" \
+  --homepage "https://markusvankempen.github.io/" \
   >/dev/null || true
 
 echo "==> Pushed docs-only https://github.com/${REPO}"

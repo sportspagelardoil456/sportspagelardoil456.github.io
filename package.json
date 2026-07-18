@@ -1,7 +1,7 @@
 {
   "name": "@markusvankempen/slack-wxo-mcp-gateway",
   "version": "1.0.0",
-  "description": "Lifts watsonx Orchestrate Slack limits: every-message wake-up (beyond byo_slack @mention/DM), multi-channel→multi-agent routing, clean gateway_thread replies, streamable-http /mcp toolkit for WxO + Cursor/VS Code/Bob/Antigravity/LangGraph. Poller, admin UI, Code Engine + ngrok. By Markus van Kempen.",
+  "description": "Lifts watsonx Orchestrate Slack limits: every-message wake-up (beyond byo_slack @mention/DM), multi-channel→multi-agent routing, clean gateway_thread replies, streamable-http /mcp for WxO + Cursor/VS Code/Bob/Antigravity/LangGraph. By Markus van Kempen — https://markusvankempen.github.io/",
   "mcpName": "io.github.markusvankempen/slack-wxo-mcp-gateway",
   "type": "commonjs",
   "bin": {
@@ -12,11 +12,14 @@
     "prepublishOnly": "node -e \"require('fs').accessSync('bin/slack-wxo-mcp-gateway.js')\"",
     "github:metadata": "bash scripts/apply-github-metadata.sh",
     "sync:public": "bash scripts/sync-public-repo.sh",
+    "sync:private": "bash scripts/sync-private-repo.sh",
     "run:http": "bash scripts/run.sh --mode http",
     "run:podman": "bash scripts/run.sh --mode podman",
     "run:ce": "bash scripts/run.sh --mode ce",
     "run:ide": "bash scripts/run.sh --mode ide",
-    "test:modes": "bash scripts/test_publish_modes.sh"
+    "test:modes": "bash scripts/test_publish_modes.sh",
+    "publish:npm": "npm publish --access public",
+    "publish:mcp": "mcp-publisher publish"
   },
   "files": [
     "bin/",
@@ -41,6 +44,7 @@
     "USE_CASES.md",
     "PUBLISH.md",
     "LICENSE",
+    "server.json",
     "scripts/"
   ],
   "engines": {
@@ -116,7 +120,7 @@
     "type": "git",
     "url": "git+https://github.com/markusvankempen/slack-wxo-mcp-gateway.git"
   },
-  "homepage": "https://github.com/markusvankempen/slack-wxo-mcp-gateway#readme",
+  "homepage": "https://markusvankempen.github.io/",
   "bugs": {
     "url": "https://github.com/markusvankempen/slack-wxo-mcp-gateway/issues",
     "email": "markus.van.kempen@gmail.com"

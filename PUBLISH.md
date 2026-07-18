@@ -1,11 +1,15 @@
-# Publish — GitHub docs + npm (later)
+# Publish — npm + MCP Registry + GitHub docs
 
 **Author:** Markus van Kempen  
 **Email:** [mvankempen@ca.ibm.com](mailto:mvankempen@ca.ibm.com) · [markus.van.kempen@gmail.com](mailto:markus.van.kempen@gmail.com)  
 **Web:** [https://markusvankempen.github.io/](https://markusvankempen.github.io/) · [GitHub](https://github.com/markusvankempen)
 
-This GitHub repository is **documentation only** for now (no application source).  
-All npm / MCP package references should still point at `https://github.com/markusvankempen`.
+| Surface | URL |
+|---------|-----|
+| npm | [`@markusvankempen/slack-wxo-mcp-gateway`](https://www.npmjs.com/package/@markusvankempen/slack-wxo-mcp-gateway) |
+| MCP Registry | `io.github.markusvankempen/slack-wxo-mcp-gateway` |
+| GitHub docs (public) | [slack-wxo-mcp-gateway](https://github.com/markusvankempen/slack-wxo-mcp-gateway) |
+| GitHub code+docs (private) | [slack-wxo-mcp-gateway-dev](https://github.com/markusvankempen/slack-wxo-mcp-gateway-dev) |
 
 **Run modes A–D** (one package, switches — not four MCP servers):  
 [`docs/PUBLISH-MODES.md`](docs/PUBLISH-MODES.md) · `./scripts/run.sh --mode http|podman|ce|ide`
@@ -19,37 +23,48 @@ All npm / MCP package references should still point at `https://github.com/marku
 
 ---
 
-## 1. Sync docs to GitHub
-
-From the private project tree:
+## 1. Sync to GitHub
 
 ```bash
+gh auth switch --user markusvankempen
+
+# Public docs-only
 ./scripts/sync-public-repo.sh
+
+# Private full source + docs
+./scripts/sync-private-repo.sh
 ```
 
-Never push `.env`, `config.yaml`, `.run/`, or application source.
+Never push `.env`, `config.yaml`, `.run/`, `.mcpregistry*`, or other secrets.
 
 ---
 
-## 2. Publish to npm (when ready)
+## 2. Publish to npm + MCP Registry
 
-Application source stays private until you choose to open it. When publishing:
+Order matters: **npm first** (package must exist), then **mcp-publisher**.
 
 ```bash
-npm login   # as markusvankempen
-npm publish --access public
+npm login                                    # as markusvankempen
+npm publish --access public --otp=XXXXXX     # 2FA required
+mcp-publisher login github                   # or: -token "$(gh auth token)"
+mcp-publisher publish                        # reads server.json
 ```
 
-Package metadata (local `package.json`) must keep:
+One-shot helper (after `npm login` / OTP):
+
+```bash
+./scripts/publish-npm-and-mcp.sh
+# or with OTP:
+npm publish --access public --otp=XXXXXX && mcp-publisher publish
+```
 
 | Field | Value |
 |-------|--------|
 | `name` | `@markusvankempen/slack-wxo-mcp-gateway` |
-| `repository.url` | `https://github.com/markusvankempen/slack-wxo-mcp-gateway.git` |
-| `homepage` | `https://github.com/markusvankempen/slack-wxo-mcp-gateway#readme` |
-| `bugs.url` | `https://github.com/markusvankempen/slack-wxo-mcp-gateway/issues` |
 | `mcpName` | `io.github.markusvankempen/slack-wxo-mcp-gateway` |
-| `author.url` | `https://github.com/markusvankempen` |
+| `server.json` | Registry manifest (`runtimeHint: npx`, `--stdio`) |
+| `homepage` / `websiteUrl` | `https://markusvankempen.github.io/` |
+| `repository.url` | `https://github.com/markusvankempen/slack-wxo-mcp-gateway.git` |
 
 ---
 

@@ -1,7 +1,7 @@
 {
   "public": {
     "repo": "markusvankempen/slack-wxo-mcp-gateway",
-    "description": "Lifts WxO Slack limits: every-message wake-up (beyond byo_slack), multi-channel→multi-agent routing, clean thread replies, streamable-http /mcp for Orchestrate + Cursor/VS Code/Bob/Antigravity/LangGraph. Docs: ngrok + Code Engine. By Markus van Kempen.",
+    "description": "Lifts WxO Slack limits: every-message wake-up (beyond byo_slack), multi-channel→multi-agent routing, streamable-http /mcp. Agentic AI Bridge — https://markusvankempen.github.io/",
     "homepage": "https://markusvankempen.github.io/",
     "topics": [
       "mcp",

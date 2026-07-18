@@ -1,0 +1,73 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.markusvankempen/slack-wxo-mcp-gateway",
+  "title": "Slack ↔ WxO MCP Gateway",
+  "description": "Lifts WxO Slack limits: every-message wake-up, multi-channel routing. https://markusvankempen.github.io/",
+  "websiteUrl": "https://markusvankempen.github.io/",
+  "repository": {
+    "url": "https://github.com/markusvankempen/slack-wxo-mcp-gateway",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@markusvankempen/slack-wxo-mcp-gateway",
+      "version": "1.0.0",
+      "runtimeHint": "npx",
+      "transport": {
+        "type": "stdio"
+      },
+      "packageArguments": [
+        {
+          "type": "positional",
+          "value": "--stdio"
+        }
+      ],
+      "environmentVariables": [
+        {
+          "name": "SLACK_BOT_TOKEN",
+          "description": "Slack Bot User OAuth Token (xoxb-…)",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": true
+        },
+        {
+          "name": "WXO_INSTANCE_URL",
+          "description": "watsonx Orchestrate instance base URL",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "WXO_API_KEY",
+          "description": "watsonx Orchestrate / MCSP API key",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": true
+        },
+        {
+          "name": "WXO_AGENT_ID",
+          "description": "Default WxO agent id for bindings",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "GATEWAY_TRANSPORT",
+          "description": "stdio (IDE) or streamable-http (hosted). Default for npx IDE use: stdio",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "SLACK_SIGNING_SECRET",
+          "description": "Slack signing secret (Events mode)",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}
